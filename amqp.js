@@ -902,12 +902,12 @@ Connection.prototype.setImplOptions = function(options) {
   this.implOptions = o;
 }
 
-Connection.prototype.connect = function () {
+Connection.prototype.init = function () {
   this.connect(this.options.port, this.options.host);
 };
 
 //maintain backwards compatability
-Connection.prototype.reconnect = this.connect
+Connection.prototype.reconnect = this.init;
 
 
 Connection.prototype._onMethod = function (channel, method, args) {
