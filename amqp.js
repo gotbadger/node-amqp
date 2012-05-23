@@ -884,7 +884,8 @@ exports.createConnection = function (connectionArgs, options, readyCallback) {
   var c = new Connection(connectionArgs, options, readyCallback);
   // c.setOptions(connectionArgs);
   // c.setImplOptions(options);
-  c.reconnect();
+  // dont connect by default this causes a race condition when adding event listeners
+  // c.reconnect();
   return c;
 };
 
@@ -901,9 +902,13 @@ Connection.prototype.setImplOptions = function(options) {
   this.implOptions = o;
 }
 
-Connection.prototype.reconnect = function () {
+Connection.prototype.connect = function () {
   this.connect(this.options.port, this.options.host);
 };
+
+//maintain backwards compatability
+Connection.prototype.reconnect = this.connect
+
 
 Connection.prototype._onMethod = function (channel, method, args) {
   debug(channel + " > " + method.name + " " + JSON.stringify(args));
